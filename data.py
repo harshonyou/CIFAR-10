@@ -10,13 +10,13 @@ def getDataset():
 
 def xNeutralizer(X_data):
     Neutralizer = lambda img : np.mean(img, axis=2)/255
-    X_update = np.ndarray(shape=(len(X_data), 32, 32))
+    X_update = np.zeros(shape=(len(X_data), 32, 32))
     for i in range(len(X_data)):
         X_update[i] = Neutralizer(X_data[i])
     return X_update
 
 def yNeutralizer(y_data):
-    y_update = np.ndarray(shape=(len(y_data), 10))
+    y_update = np.zeros(shape=(len(y_data), 10))
     for i in range(len(y_data)):
         y_update[i][y_data[i]] = 1
     return y_update
@@ -42,7 +42,12 @@ def load_data():
 
     return (X_train, y_train), (X_valid, y_valid), (X_test, y_test)
 
+def load_train_and_test():
+    (X_train, y_train) = getTrainningDataset()
+    (X_test, y_test) = getTestingDataset()
+    return (X_train, y_train), (X_test, y_test)
+
 if __name__ == "__main__":
     (X_train, y_train), (X_valid, y_valid), (X_test, y_test) = load_data()
-    print(
-        f"Dataset: Train: {len(X_train)} - Valid: {len(X_valid)} - Test: {len(X_test)}")
+    print(f"Dataset: Train: {len(X_train)} - Valid: {len(X_valid)} - Test: {len(X_test)}")
+    # print(y_test)
