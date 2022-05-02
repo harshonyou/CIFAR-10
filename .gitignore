@@ -1,3 +1,6 @@
 *.pdf
 __pycache__
 *.h5
+.vscode
+*models
+*temp
