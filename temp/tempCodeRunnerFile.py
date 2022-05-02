@@ -1,0 +1,1 @@
+df.to_csv('accuracy.csv', index=False)

@@ -3,4 +3,3 @@ __pycache__
 *.h5
 .vscode
 *models
-*temp
