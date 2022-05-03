@@ -20,10 +20,10 @@ def neautralize_x(X_train, X_test):
     X_train = X_train.astype('float32') / 255
     X_test = X_test.astype('float32') / 255
     #channel mean and std to do normalization
-    train_mean = np.mean(X_train, axis=0)
-    train_std = np.std(X_train, axis=0)
-    X_train = (X_train - train_mean) / train_std
-    X_test = (X_test - train_mean) / train_std
+    # train_mean = np.mean(X_train, axis=0)
+    # train_std = np.std(X_train, axis=0)
+    # X_train = (X_train - train_mean) / train_std
+    # X_test = (X_test - train_mean) / train_std
     return X_train, X_test
 
 # def yNeutralizer(y_data):
