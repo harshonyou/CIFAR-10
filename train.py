@@ -11,6 +11,7 @@ from config import SHAPE, EPOCHS, CSVPATH, NUMBERSOFATTRIBUTES, LOSS, MODELSAVEL
 from model import build_unet as a_unet
 from bmodel import build_unet as b_unet
 from cmodel import build_unet as c_unet
+from updated_model import build_unet as geg_unet
 
 
 def args_handler(args):
@@ -20,8 +21,8 @@ def args_handler(args):
         return 2
     elif "-high" in args:
         return 3
-    else:
-        exit()
+    elif "-updated" in args:
+        return 4
 
 if __name__ == "__main__":
     """ Arguments """
@@ -58,6 +59,8 @@ if __name__ == "__main__":
         model = b_unet(shape, num_attributes)
     elif(model_choice == 3):
         model = a_unet(shape, num_attributes)
+    elif(model_choice == 4):
+        model = geg_unet(shape, num_attributes)
 
     model.compile(loss=loss,
                   optimizer=tf.keras.optimizers.Adam(), metrics=["acc", "categorical_accuracy"])
