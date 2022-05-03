@@ -11,7 +11,7 @@ NEURONS = [32, 64, 128, 256, 512]
 # NEURONS = [8, 16, 32, 48, 64]
 
 """Hyperparameters"""
-SHAPE = (32, 32, 1)
+SHAPE = (32, 32, 3)
 LEARNINGRATE = 1e-4
 BATCHSIZE = 16
 EPOCHS = 100

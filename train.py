@@ -5,7 +5,7 @@ import tensorflow as tf
 from datetime import datetime
 from tensorflow.keras.callbacks import ModelCheckpoint, ReduceLROnPlateau, EarlyStopping, CSVLogger
 
-from data import load_data, load_train_and_test
+from data import load_train_and_test
 from config import SHAPE, EPOCHS, CSVPATH, NUMBERSOFATTRIBUTES, LOSS, MODELSAVELOCATION, MODELEXTENSTION, CSVEXTENSION
 
 from model import build_unet as a_unet
