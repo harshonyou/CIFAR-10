@@ -32,11 +32,26 @@ def build_unet(shape, num_classes):
     model.add(layers.Flatten())
     model.add(layers.Dropout(0.5))
 
+    model.add(layers.BatchNormalization())
+    model.add(layers.Dropout(0.5))
+    model.add(layers.Dense(1024,activation='relu'))
+    model.add(layers.Dense(512,activation='relu'))
+    model.add(layers.BatchNormalization())
+    model.add(layers.Dropout(0.5))
+
     model.add(layers.Dense(num_classes, activation='softmax'))
     return model
 
 
 if __name__ == "__main__":
     model = build_unet((32, 32, 3), 10)
+    for layer in model.layers[:-8]:
+        layer.trainable=False
+
+    for layer in model.layers[-8:]:
+        layer.trainable=True
+
+    for l in model.layers:
+        print(l.name, l.trainable)
     # (None, 512, 512, 18) 1170
     model.summary()

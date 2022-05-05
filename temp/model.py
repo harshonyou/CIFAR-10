@@ -1,4 +1,4 @@
-from tensorflow.keras.layers import Input, Conv2DTranspose, Conv2D, BatchNormalization, Activation, MaxPool2D, UpSampling2D, Concatenate, Flatten, Dense
+from tensorflow.keras.layers import Input, Conv2DTranspose, Conv2D, BatchNormalization, Activation, MaxPool2D, UpSampling2D, Concatenate, Flatten, Dense, Dropout
 from tensorflow.keras.models import Model
 
 from config import NEURONS
@@ -12,6 +12,7 @@ def conv_block(input, num_filters):
     x = BatchNormalization()(x)
     x = Activation("relu")(x)
 
+    x = Dropout(0.7) (x)
     return x
 
 
@@ -30,6 +31,7 @@ def decoder_block(input, skip_features, num_filters):
     x = Conv2D(num_filters, (2, 2), padding='same')(UpSampling2D(2)(input))
     x = Concatenate()([x, skip_features])
     x = conv_block(x, num_filters)
+    x = Dropout(0.4) (x)
     return x
 
 
@@ -39,12 +41,10 @@ def build_unet(input_shape, num_classes):
     s1, p1 = encoder_block(inputs, NEURONS[0])
     s2, p2 = encoder_block(p1, NEURONS[1])
     s3, p3 = encoder_block(p2, NEURONS[2])
-    s4, p4 = encoder_block(p3, NEURONS[3])
 
-    b1 = conv_block(p4, NEURONS[4])
+    b1 = conv_block(p3, NEURONS[4])
 
-    d1 = decoder_block(b1, s4, NEURONS[3])
-    d2 = decoder_block(d1, s3, NEURONS[2])
+    d2 = decoder_block(b1, s3, NEURONS[2])
     d3 = decoder_block(d2, s2, NEURONS[1])
     d4 = decoder_block(d3, s1, NEURONS[0])
 
@@ -59,6 +59,6 @@ def build_unet(input_shape, num_classes):
 
 
 if __name__ == "__main__":
-    model = build_unet((32, 32, 1), 10)
+    model = build_unet((32, 32, 3), 10)
     # (None, 512, 512, 18) 1170
     model.summary()

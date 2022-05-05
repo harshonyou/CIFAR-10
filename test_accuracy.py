@@ -1,18 +1,22 @@
+import os
 import numpy as np
 import tensorflow as tf
 import pandas as pd
-from tensorflow.callbacks import ModelCheckpoint, ReduceLROnPlateau, EarlyStopping, CSVLogger
+from keras.callbacks import ModelCheckpoint, ReduceLROnPlateau, EarlyStopping, CSVLogger
 
-from data import load_data, load_train_and_test
+from data import load_train_and_test
 from model import build_unet
 
 if __name__ == "__main__":
+    path = os.getcwd()
+
     """ Dataset """
     (_, _), (X_test, y_true) = load_train_and_test()
+    X_test =  X_test.astype('float32') / 255
     print(f"Dataset: Test: {len(X_test)}")
 
     """ Model """
-    model = tf.keras.models.load_model("model.h5")
+    model = tf.keras.models.load_model(path+"/trained/"+"4 05_05_2022 18_19_52.h5")
 
     y_pred = model.predict(X_test)
 
@@ -27,6 +31,6 @@ if __name__ == "__main__":
     df = df.append({'Quality': "Total Predictions", 'Quantity': total_pred}, ignore_index=True)
     df = df.append({'Quality': "True Predictions", 'Quantity': true_pred}, ignore_index=True)
     df = df.append({'Quality': "True Accuracy", 'Quantity': (true_pred/total_pred*100)}, ignore_index=True)
-    df.to_csv('accuracy.csv', mode='a', index=False)
+    df.to_csv(path+'/stats/'+'accuracy.csv', mode='a', index=False)
 
     print(true_pred/total_pred)

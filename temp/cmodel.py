@@ -7,16 +7,17 @@ import tensorflow.keras.models as KM
 def build_unet(input_shape, num_classes):
     inputs = KL.Input(shape=input_shape)
 
-    c = KL.Conv2D(64, (3,3), padding="valid", activation=tf.nn.relu)(inputs)
+    c = KL.Conv2D(32, (3,3), padding="valid", activation=tf.nn.relu)(inputs)
+    m = KL.MaxPool2D((2,2), (2,2)) (c)
+
+    c = KL.Conv2D(64, (3,3), padding="valid", activation=tf.nn.relu)(m)
     m = KL.MaxPool2D((2,2), (2,2)) (c)
 
     c = KL.Conv2D(128, (3,3), padding="valid", activation=tf.nn.relu)(m)
     m = KL.MaxPool2D((2,2), (2,2)) (c)
+    d = KL.Dropout(0.2) (m)
 
-    c = KL.Conv2D(256, (3,3), padding="valid", activation=tf.nn.relu)(m)
-    m = KL.MaxPool2D((2,2), (2,2)) (c)
-
-    f = KL.Flatten() (m)
+    f = KL.Flatten() (d)
     outputs = KL.Dense(num_classes, activation=tf.nn.softmax) (f)
 
     model = KM.Model(inputs, outputs, name="U-Net")
@@ -24,6 +25,6 @@ def build_unet(input_shape, num_classes):
 
 
 if __name__ == "__main__":
-    model = build_unet((32*2, 32*2, 1), 10)
+    model = build_unet((32, 32, 3), 10)
     # (None, 512, 512, 18) 1170
     model.summary()

@@ -3,26 +3,25 @@ import numpy as np
 import os
 import tensorflow as tf
 from datetime import datetime
-from tensorflow.keras.callbacks import ModelCheckpoint, ReduceLROnPlateau, EarlyStopping, CSVLogger
+from keras.callbacks import ModelCheckpoint, ReduceLROnPlateau, EarlyStopping, CSVLogger
+from keras.preprocessing.image import ImageDataGenerator
 
 from data import load_train_and_test
 from config import SHAPE, EPOCHS, CSVPATH, NUMBERSOFATTRIBUTES, LOSS, MODELSAVELOCATION, MODELEXTENSTION, CSVEXTENSION
 
-from model import build_unet as a_unet
-from bmodel import build_unet as b_unet
-from cmodel import build_unet as c_unet
 from updated_model import build_unet as geg_unet
 
 
 def args_handler(args):
-    if "-low" in args:
-        return 1
-    elif "-medium" in args:
-        return 2
-    elif "-high" in args:
-        return 3
-    elif "-updated" in args:
-        return 4
+    return 4
+    # if "-low" in args:
+    #     return 1
+    # elif "-medium" in args:
+    #     return 2
+    # elif "-high" in args:
+    #     return 3
+    # elif "-updated" in args:
+    #     return 4
 
 if __name__ == "__main__":
     """ Arguments """
@@ -55,14 +54,21 @@ if __name__ == "__main__":
     model_ext = MODELEXTENSTION
 
     """ Model """
-    if(model_choice == 1):
-        model = c_unet(shape, num_attributes)
-    elif(model_choice == 2):
-        model = b_unet(shape, num_attributes)
-    elif(model_choice == 3):
-        model = a_unet(shape, num_attributes)
-    elif(model_choice == 4):
+    if(model_choice == 4):
         model = geg_unet(shape, num_attributes)
+
+    # for layer in model.layers[:-7]:
+    #     layer.trainable=False
+
+    # for layer in model.layers[-7:]:
+    #     layer.trainable=True
+
+    # for l in model.layers:
+    #     print(l.name, l.trainable)
+
+    datagen = ImageDataGenerator(rotation_range=20, width_shift_range=0.1, height_shift_range=0.1,
+                         zoom_range=0.1, horizontal_flip=True,
+                         fill_mode="nearest")
 
     model.compile(loss=loss,
                   optimizer=tf.keras.optimizers.Adam(), metrics=["acc", "categorical_accuracy"])
@@ -75,7 +81,8 @@ if __name__ == "__main__":
         EarlyStopping(monitor="categorical_accuracy", patience=5, verbose=1)
     ]
 
-    model.fit(X_train, y_train,
+    model.fit(datagen.flow(X_train, y_train, batch_size=32),
+              steps_per_epoch=len(X_train) // 32,
               epochs=epochs,
               callbacks=callbacks
               )
