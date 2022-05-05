@@ -39,6 +39,8 @@ if __name__ == "__main__":
 
     """ Dataset """
     (X_train, y_train), (X_test, y_test) = load_train_and_test()
+    X_train = X_train.astype('float32') / 255
+    X_test = X_test.astype('float32') / 255
     print(
         f"Dataset: Train: {len(X_train)} - Test: {len(X_test)}")
 

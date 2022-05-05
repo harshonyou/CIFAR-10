@@ -1,4 +1,4 @@
-from tensorflow.keras.layers import Input, Conv2DTranspose, Conv2D, BatchNormalization, Activation, MaxPool2D, UpSampling2D, Concatenate, Flatten, Dense
+from tensorflow.keras.layers import Input, Conv2DTranspose, Conv2D, BatchNormalization, Activation, MaxPool2D, UpSampling2D, Concatenate, Flatten, Dense, Dropout
 from tensorflow.keras.models import Model
 
 from config import NEURONS
@@ -25,11 +25,13 @@ def build_unet(shape, num_classes):
     """ Encoder """
     x1, p1 = conv_block(inputs, 16, pool=True)
     x2, p2 = conv_block(p1, 32, pool=True)
-    x3, p3 = conv_block(p2, 48, pool=True)
+    z1 = Dropout(0.2)(p2)
+    x3, p3 = conv_block(z1, 48, pool=True)
     x4, p4 = conv_block(p3, 64, pool=True)
+    z2 = Dropout(0.3)(p4)
 
     """ Bridge """
-    b1 = conv_block(p4, 128, pool=False)
+    b1 = conv_block(z2, 128, pool=False)
 
     """ Decoder """
     u1 = UpSampling2D((2, 2), interpolation="bilinear")(b1)
@@ -40,7 +42,9 @@ def build_unet(shape, num_classes):
     c2 = Concatenate()([u2, x3])
     x6 = conv_block(c2, 48, pool=False)
 
-    u3 = UpSampling2D((2, 2), interpolation="bilinear")(x6)
+    z3 = Dropout(0.4)(x6)
+
+    u3 = UpSampling2D((2, 2), interpolation="bilinear")(z3)
     c3 = Concatenate()([u3, x2])
     x7 = conv_block(c3, 32, pool=False)
 
@@ -48,15 +52,18 @@ def build_unet(shape, num_classes):
     c4 = Concatenate()([u4, x1])
     x8 = conv_block(c4, 16, pool=False)
 
+    z4 = Dropout(0.5)(x8)
+
     """ Output layer """
-    x9 = Flatten() (x8)
-    d9 = Dense(num_classes, activation="softmax") (x9)
+    f1 = Flatten() (z4)
+    d1 = Dense(512, activation="relu") (f1)
+    d2 = Dense(num_classes, activation="softmax") (d1)
     # output = Conv2D(num_classes, 1, padding="same", activation="softmax")(d9)
 
-    return Model(inputs, d9)
+    return Model(inputs, d2)
 
 
 if __name__ == "__main__":
-    model = build_unet((32, 32, 1), 10)
+    model = build_unet((32, 32, 3), 10)
     # (None, 512, 512, 18) 1170
     model.summary()

@@ -7,8 +7,8 @@ NUMBERSOFATTRIBUTES  = 10
 
 """Model"""
 # NEURONS = [64, 128, 256, 512, 1024]
-NEURONS = [32, 64, 128, 256, 512]
-# NEURONS = [8, 16, 32, 48, 64]
+# NEURONS = [32, 64, 128, 256, 512]
+NEURONS = [8, 16, 32, 48, 64]
 
 """Hyperparameters"""
 SHAPE = (32, 32, 3)
