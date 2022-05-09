@@ -66,12 +66,19 @@ if __name__ == "__main__":
     # for l in model.layers:
     #     print(l.name, l.trainable)
 
-    datagen = ImageDataGenerator(rotation_range=20, width_shift_range=0.1, height_shift_range=0.1,
-                         zoom_range=0.1, horizontal_flip=True,
-                         fill_mode="nearest")
+    datagen = ImageDataGenerator(
+        featurewise_center=True,
+        featurewise_std_normalization=True,
+        rotation_range=20,
+        width_shift_range=0.2,
+        height_shift_range=0.2,
+        horizontal_flip=True,
+        validation_split=0.2)
+
+    validgen = ImageDataGenerator()
 
     model.compile(loss=loss,
-                  optimizer=tf.keras.optimizers.Adam(), metrics=["acc", "categorical_accuracy"])
+                  optimizer=tf.keras.optimizers.Adam(), metrics=["acc"])
 
     callbacks = [
         ModelCheckpoint(path + model_path + str(model_choice) + " " + dt_string + model_ext, verbose=1, save_best_model=True),
@@ -81,8 +88,12 @@ if __name__ == "__main__":
         EarlyStopping(monitor="categorical_accuracy", patience=5, verbose=1)
     ]
 
+    datagen.fit(X_train)
+
     model.fit(datagen.flow(X_train, y_train, batch_size=32),
+              validation_data = validgen.flow(X_test, y_test, batch_size=8),
               steps_per_epoch=len(X_train) // 32,
+              validation_steps=len(X_test) // 8,
               epochs=epochs,
               callbacks=callbacks
               )
