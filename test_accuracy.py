@@ -5,7 +5,6 @@ import pandas as pd
 from keras.callbacks import ModelCheckpoint, ReduceLROnPlateau, EarlyStopping, CSVLogger
 
 from data import load_train_and_test
-from model import build_unet
 
 if __name__ == "__main__":
     path = os.getcwd()
@@ -16,7 +15,7 @@ if __name__ == "__main__":
     print(f"Dataset: Test: {len(X_test)}")
 
     """ Model """
-    model = tf.keras.models.load_model(path+"/trained/"+"4 05_05_2022 18_19_52.h5")
+    model = tf.keras.models.load_model(path+"/trained/"+"4 09_05_2022 21_47_43.h5")
 
     y_pred = model.predict(X_test)
 

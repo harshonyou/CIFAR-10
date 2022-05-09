@@ -66,14 +66,7 @@ if __name__ == "__main__":
     # for l in model.layers:
     #     print(l.name, l.trainable)
 
-    datagen = ImageDataGenerator(
-        featurewise_center=True,
-        featurewise_std_normalization=True,
-        rotation_range=20,
-        width_shift_range=0.2,
-        height_shift_range=0.2,
-        horizontal_flip=True,
-        validation_split=0.2)
+    datagen = ImageDataGenerator()
 
     validgen = ImageDataGenerator()
 
@@ -82,13 +75,12 @@ if __name__ == "__main__":
 
     callbacks = [
         ModelCheckpoint(path + model_path + str(model_choice) + " " + dt_string + model_ext, verbose=1, save_best_model=True),
-        ReduceLROnPlateau(monitor="categorical_accuracy", patience=3,
+        ReduceLROnPlateau(monitor="val_loss", patience=3,
                           factor=0.1, verbose=1, min_lr=1e-6),
         CSVLogger(path + csv_path + str(model_choice) +" " + dt_string + csv_ext),
-        EarlyStopping(monitor="categorical_accuracy", patience=5, verbose=1)
+        EarlyStopping(monitor="loss", patience=5, verbose=1)
     ]
 
-    datagen.fit(X_train)
 
     model.fit(datagen.flow(X_train, y_train, batch_size=32),
               validation_data = validgen.flow(X_test, y_test, batch_size=8),

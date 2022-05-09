@@ -114,3 +114,7 @@ Quality,Quantity
 Total Predictions,10000
 True Predictions,8824
 True Accuracy,88.24
+Quality,Quantity
+Total Predictions,10000
+True Predictions,6337
+True Accuracy,63.370000000000005
