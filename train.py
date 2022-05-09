@@ -78,7 +78,7 @@ if __name__ == "__main__":
     validgen = ImageDataGenerator()
 
     model.compile(loss=loss,
-                  optimizer=tf.keras.optimizers.Adam(), metrics=["acc"])
+                  optimizer=tf.keras.optimizers.Adam(), metrics=["acc", "categorical_accuracy"])
 
     callbacks = [
         ModelCheckpoint(path + model_path + str(model_choice) + " " + dt_string + model_ext, verbose=1, save_best_model=True),
