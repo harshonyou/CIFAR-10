@@ -1,10 +1,5 @@
-import numpy as np
-
-import matplotlib.pyplot as plt
 from keras import datasets
 from keras.utils import np_utils
-
-from sklearn.model_selection import train_test_split
 
 def get_database():
     return datasets.cifar10.load_data()

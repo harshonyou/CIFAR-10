@@ -1,19 +1,18 @@
 """Dimentions"""
 H = 32
 W = 32
+CHANNEL = 3
 
 """Data"""
 NUMBERSOFATTRIBUTES  = 10
 
 """Model"""
-# NEURONS = [64, 128, 256, 512, 1024]
-# NEURONS = [32, 64, 128, 256, 512]
-NEURONS = [8, 16, 32, 48, 64]
+NEURONS = [128, 256, 384]
 
 """Hyperparameters"""
-SHAPE = (32, 32, 3)
+SHAPE = (H, W, CHANNEL)
 LEARNINGRATE = 1e-4
-BATCHSIZE = 16
+BATCHSIZE = 32
 EPOCHS = 300
 CSVPATH = "\\stats\\"
 CSVEXTENSION = ".csv"
@@ -25,5 +24,4 @@ MODELSAVELOCATION = "\\models\\"
 MODELEXTENSTION = ".h5"
 
 if __name__ == "__main__":
-    for x in range(10):
-        print(x)
+    print("Config File")

@@ -1,8 +1,6 @@
 import os
-import numpy as np
 import tensorflow as tf
 import pandas as pd
-from keras.callbacks import ModelCheckpoint, ReduceLROnPlateau, EarlyStopping, CSVLogger
 
 from data import load_train_and_test
 
@@ -15,17 +13,21 @@ if __name__ == "__main__":
     print(f"Dataset: Test: {len(X_test)}")
 
     """ Model """
-    model = tf.keras.models.load_model(path+"/trained/"+"4 09_05_2022 21_47_43.h5")
+    print("Enter the name of the model you want to check the accuracy for")
+    model = tf.keras.models.load_model(path+"/trained/"+input())
 
+    """ Prediction """
     y_pred = model.predict(X_test)
 
     total_pred = len(y_true)
     true_pred = 0
 
+    """ Calculation """
     for i in range(total_pred):
         if y_true[i].argmax() == y_pred[i].argmax():
             true_pred += 1
 
+    """ Output """
     df = pd.DataFrame(columns=['Quality', 'Quantity'])
     df = df.append({'Quality': "Total Predictions", 'Quantity': total_pred}, ignore_index=True)
     df = df.append({'Quality': "True Predictions", 'Quantity': true_pred}, ignore_index=True)
