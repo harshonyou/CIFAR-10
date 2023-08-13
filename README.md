@@ -1,8 +1,3 @@
-# INT 2 ASSESSMENT
+# CIFAR-10 Convolutional Neural Network Classifier
 
-## Current Models   
-> model.py
-
-## Training     
-> model 	: ``` py train ```   
-  
+This repository houses the implementation of a machine learning model trained on the CIFAR-10 dataset for the purpose of 2D image classification. Built using TensorFlow, our approach leverages the power of Convolutional Neural Networks (CNNs) to discern and categorize image content. Through meticulous training and optimization, the model achieves an impressive validation accuracy of approximately 93.0%. For those keen on the intricate details of our methodology, architecture, and results, we recommend diving into our comprehensive [research paper](https://harshonyou.github.io/CIFAR-10/paper/research_paper.pdf) associated with this work.
