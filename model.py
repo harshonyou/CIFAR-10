@@ -1,3 +1,9 @@
+"""
+Here, we specify the architecture of our neural network tailored for CIFAR-10 image classification.
+The model leverages Convolutional Neural Networks (CNNs) and associated layers, capturing intricate patterns
+in the images. The architecture defined in this script is crucial for the model's performance on the dataset.
+"""
+
 from keras import layers, models
 from config import NEURONS
 
@@ -40,15 +46,16 @@ def build_model(shape, num_classes):
 
     return model
 
-
 if __name__ == "__main__":
     model = build_model((32, 32, 3), 10)
+
     for layer in model.layers[:-8]:
         layer.trainable=False
 
     for layer in model.layers[-8:]:
         layer.trainable=True
 
-    for l in model.layers:
-        print(l.name, l.trainable)
+    for layer in model.layers:
+        print(layer.name, layer.trainable)
+
     model.summary()

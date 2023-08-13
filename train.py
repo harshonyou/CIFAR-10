@@ -1,3 +1,9 @@
+"""
+The main training script for the CIFAR-10 image classification task. This script integrates functionalities
+from the associated modules, orchestrating the end-to-end training process. From data loading, preprocessing,
+model construction, to the actual training phase, this script provides a holistic approach to model training.
+"""
+
 import sys
 import numpy as np
 import os
@@ -10,7 +16,6 @@ from data import load_train_and_test
 from config import SHAPE, EPOCHS, CSVPATH, NUMBERSOFATTRIBUTES, LOSS, MODELSAVELOCATION, MODELEXTENSTION, CSVEXTENSION
 
 from model import build_model as builder
-
 
 def args_handler(args):
     if "-test" in args:

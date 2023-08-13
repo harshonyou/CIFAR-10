@@ -1,3 +1,9 @@
+"""
+This script is dedicated to evaluating the trained model's performance on the CIFAR-10 test dataset.
+By loading a specified trained model, it performs predictions on the test set. Subsequently, it computes
+the accuracy, providing insights into how well the model generalizes to unseen data.
+"""
+
 import os
 import tensorflow as tf
 import pandas as pd
